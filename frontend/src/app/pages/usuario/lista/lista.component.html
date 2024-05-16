@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="col-md-12">
+    <!-- Map Container -->
+    <div class="map-container" id="map" style="height: 400px;"></div>
+  </div>
+
+    <div class="col-sm-12 col-md-12 py-3" style="text-align: right">
+      <button type="button" nbButton outline size="small" status="basic" class="btn btn-sm btn-primary" style="margin-right: 10px;" (click)="limparMapa()">Limpar Mapa</button>
+
+      <button type="submit" nbButton status="primary" size="small" class="btn btn-primary" (click)="openModal(modalTemplate)">
+        Cadastrar Usuário
+      </button>
+
+    </div>
+  </div>
+  <nb-card>
+    <nb-card-header>
+          Lista de Usuários
+    </nb-card-header>
+      
+    <nb-card-body>
+        <ng-container *ngIf="listarUsuarios.length > 0; else noUsers">
+          <ng2-smart-table [settings]="settings" [source]="listarUsuarios" (deleteConfirm)="onDeleteConfirm($event)" (custom)="onCustomAction($event)">
+          </ng2-smart-table>
+        </ng-container>
+        <ng-template #noUsers>
+          <p class="text-muted">Nenhum usuário cadastrado.</p>
+        </ng-template>
+    </nb-card-body>
+</nb-card>
+      
+<ng-template #modalTemplate let-data>
+    <form [formGroup]="formUsuario" (ngSubmit)="salvarUsuario()">
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+              <label for="nome"><strong>Nome:</strong></label>
+              <input formControlName="nome" id="nome" type="text" nbInput fullWidth placeholder="Digite seu nome..." class="form-control">
+              <div *ngIf="formUsuario.get('nome').invalid && (formUsuario.get('nome').dirty || formUsuario.get('nome').touched)">
+                <div *ngIf="formUsuario.get('nome').errors.required">Nome é obrigatório.</div>
+                <div *ngIf="formUsuario.get('nome').errors.minlength">Nome deve ter no mínimo 3 caracteres.</div>
+                <div *ngIf="formUsuario.get('nome').errors.maxlength">Nome deve ter no máximo 50 caracteres.</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="nome"><strong>Endereco:</strong></label>
+              <input formControlName="endereco" id="endereco" type="text" nbInput fullWidth placeholder="Digite seu endereco..." class="form-control">
+              <div *ngIf="formUsuario.get('endereco').invalid && (formUsuario.get('endereco').dirty || formUsuario.get('endereco').touched)">
+                <div *ngIf="formUsuario.get('endereco').errors.required">Endereco é obrigatório.</div>
+                <div *ngIf="formUsuario.get('endereco').errors.minlength">Endereco deve ter no mínimo 3 caracteres.</div>
+                <div *ngIf="formUsuario.get('endereco').errors.maxlength">Endereco deve ter no máximo 50 caracteres.</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email"><strong>E-mail:</strong></label>
+              <input formControlName="email" id="email" type="text" nbInput fullWidth placeholder="Digite seu e-mail..." class="form-control">
+              <div *ngIf="formUsuario.get('email').invalid && (formUsuario.get('email').dirty || formUsuario.get('email').touched)">
+                <div *ngIf="formUsuario.get('email').errors.required">E-mail é obrigatório.</div>
+                <div *ngIf="formUsuario.get('email').errors.pattern">E-mail inválido.</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="senha"><strong>Senha:</strong></label>
+              <input formControlName="senha" id="senha" type="password" nbInput fullWidth placeholder="Senha" class="form-control">
+              <div *ngIf="formUsuario.get('senha').invalid && (formUsuario.get('senha').dirty || formUsuario.get('senha').touched)">
+                <div *ngIf="formUsuario.get('senha').errors.required">Senha é obrigatória.</div>
+                <div *ngIf="formUsuario.get('senha').errors.minlength">Senha deve ter no mínimo 6 caracteres.</div>
+                <div *ngIf="formUsuario.get('senha').errors.maxlength">Senha deve ter no máximo 20 caracteres.</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="confirmarSenha"><strong>Confirmar Senha:</strong></label>
+              <input formControlName="confirmarSenha" id="confirmarSenha" type="password" nbInput fullWidth placeholder="Confirmar Senha" class="form-control">
+              <div *ngIf="formUsuario.hasError('notSame') && (formUsuario.get('confirmarSenha').dirty || formUsuario.get('confirmarSenha').touched)">
+                As senhas não correspondem.
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <div class="row py-3">
+          <div class="col-sm-12 col-md-12">
+            <div class="text-right">
+              <button type="button" nbButton status="danger" class="btn btn-danger" style="margin-right: 10px;" (click)="limparUsuario()">
+                Limpar
+              </button>
+              
+              <button type="submit" nbButton status="primary" class="btn btn-primary" [disabled]="formUsuario.invalid">
+                {{ isEditar ? 'Atualizar' : 'Salvar' }}
+              </button>
+                            </div>
+          </div>
+        </div>
+      </form>
+  </ng-template>

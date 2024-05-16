@@ -1,0 +1,129 @@
+<div class="row">
+  <div class="col-6">
+    <nb-card>
+      <nb-card-header>
+        Cadastro de Usuários
+      </nb-card-header>
+
+      <nb-card-body>
+        <form [formGroup]="formUsuario" (ngSubmit)="salvarUsuario()">
+          <div class="row">
+            <div class="col-12">
+              <input formControlName="id" id="id" type="hidden">
+        
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label for="nome"><strong>Nome:</strong></label>
+                  <input formControlName="nome" id="nome" type="text" nbInput fullWidth placeholder="Digite seu nome..." class="form-control" autocomplete="off">
+                  <div class="text-danger" style="font-size: small;" *ngIf="formUsuario.get('nome').invalid && (formUsuario.get('nome').dirty || formUsuario.get('nome').touched)">
+                    <div *ngIf="formUsuario.get('nome').errors.required">Nome é obrigatório.</div>
+                    <div *ngIf="formUsuario.get('nome').errors.minlength">Nome deve ter no mínimo 3 caracteres.</div>
+                    <div *ngIf="formUsuario.get('nome').errors.maxlength">Nome deve ter no máximo 50 caracteres.</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="email"><strong>E-mail:</strong></label>
+                  <input formControlName="email" id="email" type="text" nbInput fullWidth placeholder="Digite seu e-mail..." class="form-control" autocomplete="off">
+                  <div class="text-danger" style="font-size: small;" *ngIf="formUsuario.get('email').invalid && (formUsuario.get('email').dirty || formUsuario.get('email').touched)">
+                    <div *ngIf="formUsuario.get('email').errors.required">E-mail é obrigatório.</div>
+                    <div *ngIf="formUsuario.get('email').errors.pattern">E-mail inválido.</div>
+                  </div>
+                </div>
+              </div>
+        
+              <div class="form-group">
+                <label for="endereco"><strong>Endereço:</strong></label>
+                <input formControlName="endereco" id="endereco" type="text" nbInput fullWidth placeholder="Digite seu endereço..." class="form-control" autocomplete="off">
+                <div class="text-danger" style="font-size: small;" *ngIf="formUsuario.get('endereco').invalid && (formUsuario.get('endereco').dirty || formUsuario.get('endereco').touched)">
+                  <div *ngIf="formUsuario.get('endereco').errors.required">Endereço é obrigatório.</div>
+                  <div *ngIf="formUsuario.get('endereco').errors.minlength">Endereço deve ter no mínimo 10 caracteres.</div>
+                </div>
+              </div>
+        
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label for="senha"><strong>Senha:</strong></label>
+                  <input formControlName="senha" id="senha" type="password" nbInput fullWidth placeholder="Senha" class="form-control">
+                  <div class="text-danger" style="font-size: small;" *ngIf="formUsuario.get('senha').invalid && (formUsuario.get('senha').dirty || formUsuario.get('senha').touched)">
+                    <div *ngIf="formUsuario.get('senha').errors.required">Senha é obrigatória.</div>
+                    <div *ngIf="formUsuario.get('senha').errors.minlength">Senha deve ter no mínimo 6 caracteres.</div>
+                    <div *ngIf="formUsuario.get('senha').errors.maxlength">Senha deve ter no máximo 20 caracteres.</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="confirmarSenha"><strong>Confirmar Senha:</strong></label>
+                  <input formControlName="confirmarSenha" id="confirmarSenha" type="password" nbInput fullWidth placeholder="Confirmar Senha" class="form-control">
+                  <div class="text-danger" style="font-size: small;" *ngIf="formUsuario.hasError('notSame') && (formUsuario.get('confirmarSenha').dirty || formUsuario.get('confirmarSenha').touched)">
+                    As senhas não correspondem.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="row py-3">
+            <div class="col-12 text-right">
+              <button type="button" nbButton outline size="small" status="primary" class="btn btn-sm btn-primary" style="margin-right: 10px;" (click)="toggleListarUsuariosCard()">Pesquisar</button>
+              <button type="button" nbButton outline size="small" status="danger" class="btn btn-sm btn-secondary" style="margin-right: 10px;" (click)="limparUsuario()">Limpar</button>
+              <button type="submit" nbButton size="small" status="primary" class="btn btn-sm btn-primary" [disabled]="formUsuario.invalid">{{ isEditar ? 'Atualizar' : 'Salvar' }}</button>
+            </div>
+          </div>
+        </form>
+        
+
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <!-- Mapa -->
+  <div class="col-md-6">
+    <!-- Map Container -->
+    <div class="map-container" id="map" style="height: 400px;"></div>
+  </div>
+  </div>
+
+<div class="row">
+  <div class="col-12">
+    <nb-card *ngIf="mostrarListarUsuariosCard">
+      <nb-card-header>
+        Lista de Usuários
+      </nb-card-header>
+
+      <nb-card-body>
+          <table class="table table-hover table-striped table-bordered">
+            <thead>
+              <tr>
+                <th class="text-center" scope="col">ID</th>
+                <th class="text-center" scope="col">Nome</th>
+                <th class="text-center" scope="col">Endereço</th>
+                <th class="text-center" scope="col">Email</th>
+                <th class="text-center" scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let usuario of listarUsuarios let i = index">
+                <tr>
+                  <td class="text-center">{{ usuario.id }}</td>
+                  <td class="text-left">{{ usuario.nome }}</td>
+                  <td class="text-left">{{ usuario.endereco }}</td>
+                  <td class="text-left">{{ usuario.email }}</td>
+                  <td class="text-center">
+                      <i class="nb-edit action-icon text-primary" style="cursor: pointer; font-size: 1.8em;" (click)="carregarDadosParaEdicao(usuario)"></i>
+
+                    <i class="nb-trash action-icon text-danger" style="cursor: pointer; font-size: 1.8em;" (click)="onDeleteConfirm(usuario.id)"></i>
+                  </td>
+
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <ng-template #noUsers>
+            <p class="text-muted">Nenhum usuário cadastrado.</p>
+          </ng-template>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+</div>
+
+
