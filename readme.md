@@ -1,4 +1,4 @@
-# Desafio Java + Angular - FIRST DECISION
+# Desafio Java + Angular + OpenLayers
 
 Este é um projeto que consiste em uma aplicação full-stack desenvolvida com Java Spring Boot para o backend e Angular para o frontend.
 
@@ -20,7 +20,7 @@ O objetivo deste projeto é criar uma aplicação de exemplo que demonstre a int
   - Angular CLI para criação e gerenciamento de projetos Angular
   - TypeScript para programação frontend
   - HTML/SCSS para marcação e estilização
-  - OpenLayers -
+  - OpenLayers (Georreferenciamento)
 
 ## Instalação do Projeto
 
