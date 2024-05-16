@@ -20,6 +20,7 @@ O objetivo deste projeto é criar uma aplicação de exemplo que demonstre a int
   - Angular CLI para criação e gerenciamento de projetos Angular
   - TypeScript para programação frontend
   - HTML/SCSS para marcação e estilização
+  - OpenLayers -
 
 ## Instalação do Projeto
 
@@ -32,10 +33,10 @@ Abrir o projeto pela IDE Intellij e aguardar as dependencias do maven serem baix
 - Usuário db padrão: postgres
 - Senha db padrao: postgres
 
-- Porta backend: 8085
+- Porta backend: 8086
 
 - **Acesso Endpoint:**
-Acesse o endereço:[Endpoint](http://localhost:8085/api/)
+Acesse o endereço:[Endpoint](http://localhost:8086/api/)
 
 - **Frontend:**
 - http://localhost:4200/
